@@ -49,7 +49,10 @@ def make_names_unique(alist):
             new_names.append("%s-%d" % (item, duplicates[item]))
         else:
             duplicates[item] = 0
-            new_names.append(str(item))
+            if type(item) is unicode:
+                new_names.append(item)
+            else:
+                new_names.append(str(item))
     return new_names
 
 
@@ -409,6 +412,7 @@ VALID_SHEET_PARAMETERS = ['name_columns_by_row',
                           'rownames',
                           'transpose_before',
                           'transpose_after']
+
 
 class NominableSheet(FilterableSheet):
     """Allow dictionary group of the content
@@ -812,12 +816,12 @@ class NominableSheet(FilterableSheet):
                     if item == "":
                         new_array.append(" ")
                     else:
-                        new_array.append(to_format(str,item))
+                        new_array.append(to_format(str, item))
                 new_data.append(new_array)
             table.add_rows(new_data)
-            return ret+table.draw()
+            return ret + table.draw()
         else:
-            return ret+FilterableSheet.__str__(self)
+            return ret + FilterableSheet.__str__(self)
 
     def named_rows(self):
         return NamedRowIterator(self)
